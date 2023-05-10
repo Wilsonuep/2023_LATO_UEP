@@ -5,13 +5,17 @@ import pl.psi.hero.Hero;
 import pl.psi.player.PlayerResources;
 
 public class Resource implements MapElement {
+    public enum ResourceType {
+        GOLD, WOOD, ORE, MERCURY, SULFUR, CRYSTAL, GEMS
+    }
 
-    private final pl.psi.Resource.Type type;
-    private final int resourceAmount;
 
-    public Resource(pl.psi.Resource.Type aType, int aResourceAmount) {
+    private final ResourceType type;
+    private final int resourceNumber;
+
+    public Resource(ResourceType aType, int aResourceNumber) {
         this.type = aType;
-        this.resourceAmount = aResourceAmount;
+        this.resourceNumber = aResourceNumber;
     }
 
     @Override
@@ -20,42 +24,34 @@ public class Resource implements MapElement {
     }
 
     @Override
-    public void apply(Hero aHero) {
+    public void apply(Hero aHero, HashBiMap map) {
         // Get resources from Player's instance
         PlayerResources resources = aHero.getHeroStatistics().getPlayer().getResources();
         switch (type) {
             case GOLD:
                 // Add gold for Player's resources
-                resources.setGold(resources.getGold()+ resourceAmount);
+                resources.setGold(resources.getGold()+resourceNumber);
                 break;
             case WOOD:
-                resources.setWood(resources.getWood()+ resourceAmount);
+                resources.setWood(resources.getWood()+resourceNumber);
                 break;
             case ORE:
-                resources.setOre(resources.getOre()+ resourceAmount);
+                resources.setOre(resources.getOre()+resourceNumber);
                 break;
             case MERCURY:
-                resources.setMercury(resources.getMercury()+ resourceAmount);
+                resources.setMercury(resources.getMercury()+resourceNumber);
                 break;
             case SULFUR:
-                resources.setSulfur(resources.getSulfur()+ resourceAmount);
+                resources.setSulfur(resources.getSulfur()+resourceNumber);
                 break;
             case CRYSTAL:
-                resources.setCrystal(resources.getCrystal()+ resourceAmount);
+                resources.setCrystal(resources.getCrystal()+resourceNumber);
                 break;
             case GEMS:
-                resources.setGems(resources.getGems()+ resourceAmount);
+                resources.setGems(resources.getGems()+resourceNumber);
                 break;
         }
-    }
 
-    @Override
-    public boolean shouldBeRemoveAfterAction() {
-        return true;
-    }
-
-    @Override
-    public void endOfTurn() {
-
+        map.inverse().remove(this);
     }
 }

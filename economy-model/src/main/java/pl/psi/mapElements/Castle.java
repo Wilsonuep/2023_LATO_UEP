@@ -69,24 +69,30 @@
 //}
 
 package pl.psi.mapElements;
+import com.google.common.collect.HashBiMap;
 import pl.psi.Buildings.Building;
+import pl.psi.Buildings.HallBuilding;
 import pl.psi.Buildings.RecruitmentBuilding;
 import pl.psi.hero.Hero;
+
+
+
 import java.util.ArrayList;
-import static pl.psi.Resource.Type;
+
+import static pl.psi.mapElements.Resource.ResourceType.*;
 
 
 public class Castle implements MapElement {
     // TODO
 
-    private ArrayList<RecruitmentBuilding> buildingsToBuy = new ArrayList<>();
-    private ArrayList<RecruitmentBuilding> buildingsOwned = new ArrayList<>();
+    private ArrayList<Building> buildingsToBuy = new ArrayList<>();
+    private ArrayList<Building> buildingsOwned = new ArrayList<>();
 
-    public ArrayList<RecruitmentBuilding> getBuildingsToBuy() {
+    public ArrayList<Building> getBuildingsToBuy() {
         return buildingsToBuy;
     }
 
-    public ArrayList<RecruitmentBuilding> getBuildingsOwned() {
+    public ArrayList<Building> getBuildingsOwned() {
         return buildingsOwned;
     }
 
@@ -98,28 +104,10 @@ public class Castle implements MapElement {
     private final Hero owner = null;
 
     public Castle(FractionType fractionType) {
-        switch(fractionType) {
-            case TOWER:
-                buildingsOwned.add(new RecruitmentBuilding("Workshop", Building.Type.RECRUITMENT, 1, 1, fractionType));
-                buildingsOwned.add(new RecruitmentBuilding("Parapet", Building.Type.RECRUITMENT, 2, 2, fractionType));
-                buildingsToBuy.add(new RecruitmentBuilding("Golem factory", Building.Type.RECRUITMENT, 3, new Resource(Type.GOLD, 1500), 3, fractionType));
-                buildingsToBuy.add(new RecruitmentBuilding("Mage tower", Building.Type.RECRUITMENT, 4, new Resource(Type.GOLD, 2000), 4, fractionType));
-                buildingsToBuy.add(new RecruitmentBuilding("Altar of Wishes", Building.Type.RECRUITMENT, 4, new Resource(Type.GOLD, 2000), 5, fractionType));
-                buildingsToBuy.add(new RecruitmentBuilding("Golden pavilion", Building.Type.RECRUITMENT, 4, new Resource(Type.GOLD, 6000), 6, fractionType));
-                buildingsToBuy.add(new RecruitmentBuilding("Cloud temple", Building.Type.RECRUITMENT, 4, new Resource(Type.GOLD, 10000), 7, fractionType));
-                break;
-            case NECROPOLIS:
-                buildingsOwned.add(new RecruitmentBuilding("Cursed temple", Building.Type.RECRUITMENT, 1, 1, fractionType));
-                buildingsOwned.add(new RecruitmentBuilding("Graveyard", Building.Type.RECRUITMENT, 2, 2, fractionType));
-                buildingsToBuy.add(new RecruitmentBuilding("Tomb of souls", Building.Type.RECRUITMENT, 3, new Resource(Type.GOLD, 1500), 3, fractionType));
-                buildingsToBuy.add(new RecruitmentBuilding("Estate", Building.Type.RECRUITMENT, 4, new Resource(Type.GOLD, 2000), 4, fractionType));
-                buildingsToBuy.add(new RecruitmentBuilding("Mausoleum", Building.Type.RECRUITMENT, 4, new Resource(Type.GOLD, 2000), 5, fractionType));
-                buildingsToBuy.add(new RecruitmentBuilding("Hall of Darkness", Building.Type.RECRUITMENT, 4, new Resource(Type.GOLD, 6000), 6, fractionType));
-                buildingsToBuy.add(new RecruitmentBuilding("Dragon vault", Building.Type.RECRUITMENT, 4, new Resource(Type.GOLD, 10000), 7, fractionType));
-                break;
-                //factory do tego z innym słowkiem na castle
-        }
+        buildingsOwned = TownFactory.createBuildingsOwned(fractionType);
+        buildingsToBuy = TownFactory.createBuildingsToBuy(fractionType);
     }
+    // nie nazywac tego fabryka
 
     @Override
     public boolean isInteractive() {
@@ -128,17 +116,8 @@ public class Castle implements MapElement {
 
     @Override
     public void apply(Hero aHero) {
-
     }
 
-    @Override
-    public boolean shouldBeRemoveAfterAction() {
-        return false;
-    }
 
-    @Override
-    public void endOfTurn() {
-
-    }
 
 }
